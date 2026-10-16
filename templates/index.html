@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction Portal</title>
+    <!-- System Fonts & FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Corporate Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <i class="fa-solid fa-building-columns brand-icon"></i>
+                <div class="brand-info">
+                    <span class="app-title">Telecom Customer Churn Portal</span>
+                    <span class="app-subtitle">Predictive Analytics & Retention System</span>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="#single" class="nav-btn active" id="nav-single">
+                    <i class="fa-solid fa-user-check"></i> Single Prediction
+                </a>
+                <a href="#batch" class="nav-btn" id="nav-batch">
+                    <i class="fa-solid fa-file-csv"></i> Batch Dataset Prediction
+                </a>
+                <a href="#model" class="nav-btn" id="nav-model">
+                    <i class="fa-solid fa-database"></i> Model Specs & Features
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <!-- TAB 1: Single Prediction -->
+        <section id="tab-single" class="tab-panel active">
+            <div class="panel-card">
+                <div class="panel-header">
+                    <h2>Customer Attributes Form</h2>
+                    <p>Enter the customer's demographics, subscribed services, and account details to evaluate churn risk.</p>
+                </div>
+
+                <form id="single-predict-form">
+                    <!-- Demographics -->
+                    <div class="form-block">
+                        <h3 class="block-title"><i class="fa-solid fa-id-card"></i> Customer Demographics</h3>
+                        <div class="form-grid grid-3">
+                            <div class="form-item">
+                                <label>Senior Citizen (Age ≥ 65)</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="SeniorCitizen" name="SeniorCitizen" value="1">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+
+                            <div class="form-item">
+                                <label>Has Partner</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="Partner" name="Partner" value="Yes">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+
+                            <div class="form-item">
+                                <label>Has Dependents</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="Dependents" name="Dependents" value="Yes">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subscribed Services -->
+                    <div class="form-block">
+                        <h3 class="block-title"><i class="fa-solid fa-network-wired"></i> Subscribed Telecom Services</h3>
+                        <div class="form-grid grid-3">
+                            <div class="form-item">
+                                <label for="InternetService">Internet Service Type</label>
+                                <select id="InternetService" name="InternetService" class="select-input">
+                                    <option value="Fiber optic">Fiber Optic</option>
+                                    <option value="DSL">DSL</option>
+                                    <option value="No">No Internet Service</option>
+                                </select>
+                            </div>
+
+                            <div class="form-item">
+                                <label>Multiple Phone Lines</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="MultipleLines" name="MultipleLines" value="Yes">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+
+                            <div class="form-item">
+                                <label>Online Security</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="OnlineSecurity" name="OnlineSecurity" value="Yes">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+
+                            <div class="form-item">
+                                <label>Online Backup</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="OnlineBackup" name="OnlineBackup" value="Yes">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+
+                            <div class="form-item">
+                                <label>Device Protection</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="DeviceProtection" name="DeviceProtection" value="Yes">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+
+                            <div class="form-item">
+                                <label>Tech Support</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="TechSupport" name="TechSupport" value="Yes">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+
+                            <div class="form-item">
+                                <label>Streaming TV</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="StreamingTV" name="StreamingTV" value="Yes">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+
+                            <div class="form-item">
+                                <label>Streaming Movies</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="StreamingMovies" name="StreamingMovies" value="Yes">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+
+                            <div class="form-item">
+                                <label>Paperless Billing</label>
+                                <div class="toggle-wrapper">
+                                    <span class="toggle-lbl">No</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="PaperlessBilling" name="PaperlessBilling" value="Yes" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-lbl">Yes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contract & Billing -->
+                    <div class="form-block">
+                        <h3 class="block-title"><i class="fa-solid fa-file-invoice"></i> Account & Billing Terms</h3>
+                        <div class="form-grid grid-3">
+                            <div class="form-item">
+                                <label for="Contract">Contract Type</label>
+                                <select id="Contract" name="Contract" class="select-input">
+                                    <option value="Month-to-month">Month-to-month</option>
+                                    <option value="One year">One Year</option>
+                                    <option value="Two year">Two Year</option>
+                                </select>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="PaymentMethod">Payment Method</label>
+                                <select id="PaymentMethod" name="PaymentMethod" class="select-input">
+                                    <option value="Electronic check">Electronic Check</option>
+                                    <option value="Mailed check">Mailed Check</option>
+                                    <option value="Bank transfer (automatic)">Bank Transfer (Automatic)</option>
+                                    <option value="Credit card (automatic)">Credit Card (Automatic)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="tenure">Tenure (Months)</label>
+                                <input type="number" id="tenure" name="tenure" class="text-input" value="12" min="0" max="100" required>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="MonthlyCharges">Monthly Charges ($)</label>
+                                <input type="number" id="MonthlyCharges" name="MonthlyCharges" class="text-input" value="70.35" step="0.01" required>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="TotalCharges">Total Charges ($)</label>
+                                <input type="number" id="TotalCharges" name="TotalCharges" class="text-input" value="844.20" step="0.01" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-row">
+                        <button type="submit" class="btn btn-action" id="btn-single-submit">
+                            <i class="fa-solid fa-chart-line"></i> Evaluate Customer Risk
+                        </button>
+                        <button type="reset" class="btn btn-reset">Clear Form</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Single Result Card -->
+            <div id="single-result-card" class="panel-card result-box hidden">
+                <div class="result-summary-bar">
+                    <div class="result-left">
+                        <span id="risk-pill" class="status-pill">HIGH RISK</span>
+                        <h3 id="result-status-title">Churn Expected (At Risk)</h3>
+                    </div>
+                    <div class="result-right">
+                        <span class="score-caption">Calculated Risk Score</span>
+                        <div id="result-score-num" class="score-num">78.4%</div>
+                    </div>
+                </div>
+
+                <div class="bar-bg">
+                    <div id="bar-fill" class="bar-fill" style="width: 78.4%;"></div>
+                </div>
+
+                <div class="advice-block">
+                    <h4><i class="fa-solid fa-circle-check"></i> Recommended Retention Plan</h4>
+                    <ul id="recs-ul"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Batch Prediction -->
+        <section id="tab-batch" class="tab-panel hidden">
+            <div class="panel-card">
+                <div class="panel-header">
+                    <h2>Batch Dataset Prediction</h2>
+                    <p>Upload a CSV dataset of customer records. The system will process predictions and generate risk evaluations for all rows.</p>
+                </div>
+
+                <form id="batch-form">
+                    <div class="drop-zone" id="drop-zone">
+                        <i class="fa-solid fa-file-csv drop-icon"></i>
+                        <p class="drop-text">Click to Select CSV File or Drag & Drop File Here</p>
+                        <span class="drop-hint">Accepts standard customer CSV files</span>
+                        <input type="file" id="batch-file-element" name="file" accept=".csv" required>
+                        <div id="batch-file-name" class="file-name-tag">No file selected</div>
+                    </div>
+
+                    <div class="center-btn-row">
+                        <button type="submit" class="btn btn-action btn-wide" id="btn-batch-run">
+                            <i class="fa-solid fa-gears"></i> Run Batch Prediction
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Batch Results Box -->
+            <div id="batch-results-box" class="panel-card hidden">
+                <div class="batch-top-bar">
+                    <div>
+                        <h3>Batch Prediction Summary</h3>
+                        <p id="batch-record-count">Processed 0 Customer Records</p>
+                    </div>
+                    <a id="download-csv-link" href="#" class="btn btn-download">
+                        <i class="fa-solid fa-download"></i> Download Full CSV Results
+                    </a>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <span class="m-title">Total Records</span>
+                        <span class="m-val" id="m-total">0</span>
+                    </div>
+                    <div class="metric-box m-churn">
+                        <span class="m-title">Predicted Churn</span>
+                        <span class="m-val" id="m-churn">0</span>
+                    </div>
+                    <div class="metric-box m-retain">
+                        <span class="m-title">Predicted Retain</span>
+                        <span class="m-val" id="m-retain">0</span>
+                    </div>
+                    <div class="metric-box m-risk">
+                        <span class="m-title">High Risk Customers</span>
+                        <span class="m-val" id="m-highrisk">0</span>
+                    </div>
+                </div>
+
+                <h4 class="preview-title">First 20 Customer Predictions Preview</h4>
+                <div class="table-wrapper">
+                    <table class="classic-table" id="preview-table">
+                        <thead>
+                            <tr id="th-row"></tr>
+                        </thead>
+                        <tbody id="tb-rows"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Model Specifications & Feature Details -->
+        <section id="tab-model" class="tab-panel hidden">
+            <div class="panel-card">
+                <div class="panel-header">
+                    <h2>Model Specifications & Feature Dictionary</h2>
+                    <p>Comprehensive overview of machine learning methodology, hyperparameter optimization, and feature engineering rules.</p>
+                </div>
+
+                <div class="two-col-grid">
+                    <div class="section-box">
+                        <h3><i class="fa-solid fa-sliders"></i> Classifier Configuration</h3>
+                        <table class="doc-table">
+                            <tr><th>Model Architecture</th><td>Logistic Regression (SMOTE Balanced)</td></tr>
+                            <tr><th>Class Balancing</th><td>Synthetic Minority Over-sampling Technique (SMOTE)</td></tr>
+                            <tr><th>GridSearch Parameters</th><td><code>C: 0.01</code> | <code>penalty: 'l2'</code> | <code>solver: 'lbfgs'</code></td></tr>
+                            <tr><th>Validation Strategy</th><td>5-Fold Stratified Cross-Validation (Optimizing F1-Score)</td></tr>
+                            <tr><th>Decision Threshold</th><td>0.50 Probability Cutoff</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="section-box">
+                        <h3><i class="fa-solid fa-chart-line"></i> Evaluation Metrics</h3>
+                        <table class="doc-table">
+                            <tr><th>ROC-AUC Score</th><td><strong>0.8400</strong></td></tr>
+                            <tr><th>F1-Score (Churn Class)</th><td><strong>0.6205</strong></td></tr>
+                            <tr><th>Overall Accuracy</th><td><strong>75.51%</strong></td></tr>
+                            <tr><th>Churn Class Recall</th><td><strong>75.00%</strong> (Detects 3 out of 4 churners)</td></tr>
+                            <tr><th>Churn Class Precision</th><td><strong>53.00%</strong></td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="section-box full-width-box">
+                    <h3><i class="fa-solid fa-circle-info"></i> Preprocessing Rationale & Dropped Predictors</h3>
+                    <p>Following empirical statistical analysis in <code>customer_churn.py</code>:</p>
+                    <ul class="doc-list">
+                        <li><strong>Gender & PhoneService Dropped:</strong> Chi-Square ($\chi^2$) tests proved gender ($p > 0.05$, Cramér's V $\approx 0.008$) and PhoneService show no significant statistical relationship with churn. Dropping them prevents overfitting.</li>
+                        <li><strong>Multicollinearity Removal:</strong> Duplicate flags such as <code>OnlineSecurity_No internet service</code> were removed to eliminate exact collinearity with <code>InternetService_No</code>.</li>
+                        <li><strong>Numerical Normalization:</strong> <code>tenure</code> and <code>MonthlyCharges</code> are scaled via <code>StandardScaler</code>. The right-skewed <code>TotalCharges</code> variable is normalized via the <strong>Yeo-Johnson PowerTransformer</strong>.</li>
+                    </ul>
+                </div>
+
+                <div class="section-box full-width-box">
+                    <h3><i class="fa-solid fa-table"></i> Complete 22 Feature Dictionary</h3>
+                    <div class="table-wrapper">
+                        <table class="classic-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Feature Name</th>
+                                    <th>Type</th>
+                                    <th>Transformation</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1</td><td><code>tenure</code></td><td>Numeric</td><td>StandardScaler</td><td>Customer account age in months</td></tr>
+                                <tr><td>2</td><td><code>MonthlyCharges</code></td><td>Numeric</td><td>StandardScaler</td><td>Current monthly bill amount ($)</td></tr>
+                                <tr><td>3</td><td><code>TotalCharges_yj</code></td><td>Numeric</td><td>Yeo-Johnson PowerTransformer</td><td>Normalized total billing amount ($)</td></tr>
+                                <tr><td>4</td><td><code>SeniorCitizen</code></td><td>Binary</td><td>Numeric (0/1)</td><td>Customer age 65 or older</td></tr>
+                                <tr><td>5</td><td><code>Partner_Yes</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Has a partner</td></tr>
+                                <tr><td>6</td><td><code>Dependents_Yes</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Has financial dependents</td></tr>
+                                <tr><td>7</td><td><code>MultipleLines_No phone service</code></td><td>Binary</td><td>One-Hot Encoded</td><td>No phone line subscription</td></tr>
+                                <tr><td>8</td><td><code>MultipleLines_Yes</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Multiple phone lines subscribed</td></tr>
+                                <tr><td>9</td><td><code>InternetService_Fiber optic</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Fiber optic internet service</td></tr>
+                                <tr><td>10</td><td><code>InternetService_No</code></td><td>Binary</td><td>One-Hot Encoded</td><td>No internet service subscription</td></tr>
+                                <tr><td>11</td><td><code>OnlineSecurity_Yes</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Subscribed to Online Security</td></tr>
+                                <tr><td>12</td><td><code>OnlineBackup_Yes</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Subscribed to Online Backup</td></tr>
+                                <tr><td>13</td><td><code>DeviceProtection_Yes</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Subscribed to Device Protection</td></tr>
+                                <tr><td>14</td><td><code>TechSupport_Yes</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Subscribed to Tech Support</td></tr>
+                                <tr><td>15</td><td><code>StreamingTV_Yes</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Subscribed to Streaming TV</td></tr>
+                                <tr><td>16</td><td><code>StreamingMovies_Yes</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Subscribed to Streaming Movies</td></tr>
+                                <tr><td>17</td><td><code>Contract_One year</code></td><td>Binary</td><td>One-Hot Encoded</td><td>1-Year contract term</td></tr>
+                                <tr><td>18</td><td><code>Contract_Two year</code></td><td>Binary</td><td>One-Hot Encoded</td><td>2-Year contract term</td></tr>
+                                <tr><td>19</td><td><code>PaperlessBilling_Yes</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Electronic billing enabled</td></tr>
+                                <tr><td>20</td><td><code>PaymentMethod_Credit card (automatic)</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Auto credit card billing</td></tr>
+                                <tr><td>21</td><td><code>PaymentMethod_Electronic check</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Electronic check billing</td></tr>
+                                <tr><td>22</td><td><code>PaymentMethod_Mailed check</code></td><td>Binary</td><td>One-Hot Encoded</td><td>Mailed check billing</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

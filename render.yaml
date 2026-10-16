@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: customer-churn-prediction
+    env: python
+    buildCommand: pip install -r requirements.txt && python -m src.model_training
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
